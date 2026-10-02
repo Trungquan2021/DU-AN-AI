@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var currentFetch =
+            typeof window !== 'undefined' && typeof window.fetch === 'function'
+              ? window.fetch.bind(window)
+              : undefined;
+          if (currentFetch) {
+            try {
+              Object.defineProperty(window, 'fetch', {
+                get: function () {
+                  return currentFetch;
+                },
+                set: function (fn) {
+                  if (typeof fn === 'function') currentFetch = fn;
+                },
+                configurable: true,
+                enumerable: true,
+              });
+            } catch (e1) {}
+            try {
+              if (typeof Window !== 'undefined' && Window.prototype) {
+                Object.defineProperty(Window.prototype, 'fetch', {
+                  get: function () {
+                    return currentFetch;
+                  },
+                  set: function (fn) {
+                    if (typeof fn === 'function') currentFetch = fn;
+                  },
+                  configurable: true,
+                  enumerable: true,
+                });
+              }
+            } catch (e2) {}
+          }
+        } catch (err) {}
+      })();
+    </script>
+    <title>BlueSpace — Diễn Đàn Cộng Đồng, Mạng Xã Hội & Trò Chuyện Trực Tuyến</title>
+    <meta name="description" content="Nền tảng diễn đàn cộng đồng hiện đại kết hợp mạng xã hội, kết bạn và nhắn tin riêng 1-1 thời gian thực với giao diện xanh dương tối giản." />
+    <meta property="og:title" content="BlueSpace — Diễn Đàn Cộng Đồng, Mạng Xã Hội & Trò Chuyện Trực Tuyến" />
+    <meta property="og:description" content="Nền tảng diễn đàn cộng đồng hiện đại kết hợp mạng xã hội, kết bạn và nhắn tin riêng 1-1 thời gian thực với giao diện xanh dương tối giản." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
