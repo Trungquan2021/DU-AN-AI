@@ -79,7 +79,7 @@ export const SettingsPage: React.FC = () => {
       <div className="bg-white border border-slate-200/80 rounded-xl p-6">
         <h1 className="text-xl font-bold text-slate-900">Cài đặt tài khoản</h1>
         <p className="text-sm text-slate-500 mt-1">
-          Quản lý thông tin bảo mật, quyền riêng tư và tùy chọn trải nghiệm trên BlueSpace.
+          Quản lý thông tin bảo mật, quyền riêng tư và tùy chọn trải nghiệm trên Xamvier.
         </p>
       </div>
 

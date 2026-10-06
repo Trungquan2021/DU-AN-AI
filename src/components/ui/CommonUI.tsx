@@ -22,6 +22,56 @@ import { useApp } from '../../context/AppContext';
 import { apiRequest } from '../../services/api';
 
 // ============================================================================
+// Xamvier Brand Logo Component
+// ============================================================================
+export const XamvierLogo: React.FC<{
+  size?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;
+  showBadge?: boolean;
+}> = ({ size = 'md', onClick, showBadge = false }) => {
+  const iconSize = size === 'sm' ? 'w-6 h-6' : size === 'lg' ? 'w-9 h-9' : 'w-7 h-7';
+  const textSize = size === 'sm' ? 'text-base' : size === 'lg' ? 'text-2xl' : 'text-xl';
+  const glyphSize = size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-5 h-5' : 'w-4 h-4';
+
+  return (
+    <div
+      onClick={onClick}
+      className={`inline-flex items-center gap-2.5 select-none ${
+        onClick ? 'cursor-pointer group' : ''
+      }`}
+    >
+      <div
+        className={`${iconSize} rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex items-center justify-center shadow-xs shadow-blue-600/30 group-hover:scale-105 transition-transform shrink-0`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className={`${glyphSize} text-white`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 4l16 16M20 4L4 20" />
+        </svg>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <span
+          className={`${textSize} font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors`}
+        >
+          Xamvier
+        </span>
+        {showBadge && (
+          <span className="px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-blue-50 text-blue-700 rounded-md border border-blue-200/60">
+            Community
+          </span>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
 // UserAvatar Component (Zero-Broken-Image Policy)
 // ============================================================================
 export const UserAvatar: React.FC<{

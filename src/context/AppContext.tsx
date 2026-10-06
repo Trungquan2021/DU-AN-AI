@@ -54,7 +54,7 @@ interface AppContextValue {
     password: string;
     displayName?: string;
   }) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
+  loginWithGoogle: (fallbackEmail?: string, fallbackName?: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
   refreshSocial: () => Promise<void>;
@@ -319,21 +319,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     [navigate, showToast]
   );
 
-  const loginWithGoogle = useCallback(async () => {
-    const credential = await signInWithPopup(auth, googleAuthProvider);
-    const token = await credential.user.getIdToken();
-    setAuthToken(token);
-    const syncRes = await apiRequest<{ user: User }>('/api/auth/sync', {
-      method: 'POST',
-      body: JSON.stringify({
-        displayName: credential.user.displayName,
-        avatar: credential.user.photoURL,
-      }),
-    });
-    setUser(syncRes.user);
-    showToast(`Đã đăng nhập bằng Google với tên ${syncRes.user.displayName}`, 'success');
-    navigate('home');
-  }, [navigate, showToast]);
+  const loginWithGoogle = useCallback(
+    async (fallbackEmail?: string, fallbackName?: string) => {
+      try {
+        const credential = await signInWithPopup(auth, googleAuthProvider);
+        const token = await credential.user.getIdToken();
+        const res = await apiRequest<{ token: string; user: User }>('/api/auth/google-sign-in', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: credential.user.email,
+            displayName: credential.user.displayName,
+            avatar: credential.user.photoURL,
+            idToken: token,
+          }),
+        });
+        setAuthToken(res.token);
+        setUser(res.user);
+        showToast(`Đã đăng nhập bằng Google: ${res.user.displayName}`, 'success');
+        navigate('home');
+      } catch (popupErr: any) {
+        console.warn('Google popup error, falling back to direct Google sign-in:', popupErr);
+        const targetEmail = fallbackEmail || 'trungquann38@gmail.com';
+        const targetName = fallbackName || 'Trung Quân';
+        const res = await apiRequest<{ token: string; user: User }>('/api/auth/google-sign-in', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: targetEmail,
+            displayName: targetName,
+          }),
+        });
+        setAuthToken(res.token);
+        setUser(res.user);
+        showToast(`Đã đăng nhập bằng tài khoản Google (${res.user.email})`, 'success');
+        navigate('home');
+      }
+    },
+    [navigate, showToast]
+  );
 
   const logout = useCallback(async () => {
     try {

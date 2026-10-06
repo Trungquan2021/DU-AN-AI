@@ -17,7 +17,7 @@ import {
   X,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { UserAvatar, UserCard } from '../ui/CommonUI';
+import { UserAvatar, UserCard, XamvierLogo } from '../ui/CommonUI';
 import { apiRequest } from '../../services/api';
 import type { ScreenName, Topic } from '../../types';
 
@@ -98,13 +98,7 @@ export const MainLayout: React.FC<{
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col">
       {/* Mobile Header (Strict 3-zone Top Bar Contract, <15% viewport height) */}
       <header className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-xs border-b border-slate-200 px-4 h-14 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => navigate('home')}
-          className="text-lg font-bold tracking-tight text-blue-600 whitespace-nowrap"
-        >
-          BlueSpace
-        </button>
+        <XamvierLogo size="sm" onClick={() => navigate('home')} />
 
         <div className="flex items-center gap-4 text-xs font-medium text-slate-600">
           <button
@@ -158,13 +152,11 @@ export const MainLayout: React.FC<{
           <div className="w-72 bg-white h-full flex flex-col justify-between p-5 overflow-y-auto shadow-xl">
             <div>
               <div className="flex items-center justify-between mb-6">
-                <span className="text-xl font-bold tracking-tight text-blue-600">
-                  BlueSpace
-                </span>
+                <XamvierLogo size="md" onClick={() => { setMobileMenuOpen(false); navigate('home'); }} />
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-1 text-slate-400 hover:text-slate-600"
+                  className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -312,13 +304,7 @@ export const MainLayout: React.FC<{
           <div className="space-y-6 overflow-y-auto pr-1">
             {/* Brand Header */}
             <div className="px-2 pt-1 flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => navigate(user ? 'home' : 'landing')}
-                className="text-xl font-bold tracking-tight text-blue-600 hover:text-blue-700 transition-colors"
-              >
-                BlueSpace
-              </button>
+              <XamvierLogo size="md" onClick={() => navigate(user ? 'home' : 'landing')} showBadge />
             </div>
 
             {/* Primary CTA */}

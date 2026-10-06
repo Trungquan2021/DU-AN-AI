@@ -79,7 +79,7 @@ export async function getOrCreateUser(
         email: cleanEmail,
         displayName: resolvedName,
         avatar: avatar || '',
-        bio: 'Thành viên cộng đồng BlueSpace',
+        bio: 'Thành viên cộng đồng Xamvier',
         role,
         onlineStatus: true,
       })
@@ -133,7 +133,7 @@ export async function registerLocalUser(input: {
         email: cleanEmail,
         passwordHash: input.passwordHash,
         displayName: input.displayName?.trim() || input.username.trim(),
-        bio: 'Thành viên mới tại cộng đồng BlueSpace.',
+        bio: 'Thành viên mới tại cộng đồng Xamvier.',
         role,
         onlineStatus: true,
       })
@@ -148,11 +148,11 @@ export async function registerLocalUser(input: {
 
 export async function getUserWithPasswordByIdentifier(identifier: string) {
   try {
-    const clean = identifier.trim().toLowerCase();
+    const clean = identifier.trim();
     const found = await db
       .select()
       .from(users)
-      .where(or(eq(users.email, clean), eq(users.username, clean)));
+      .where(or(ilike(users.email, clean), ilike(users.username, clean)));
     return found[0] || null;
   } catch (error) {
     console.error('Database error in getUserWithPasswordByIdentifier:', error);

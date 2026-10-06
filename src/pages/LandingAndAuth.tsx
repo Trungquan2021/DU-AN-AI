@@ -4,7 +4,7 @@ import { useApp } from '../context/AppContext';
 import { apiRequest } from '../services/api';
 import type { Topic } from '../types';
 import { formatRelativeTime, GENERATED_ASSETS } from '../utils/format';
-import { UserAvatar } from '../components/ui/CommonUI';
+import { UserAvatar, XamvierLogo } from '../components/ui/CommonUI';
 
 // ============================================================================
 // 1. LANDING PAGE
@@ -25,17 +25,7 @@ export const LandingPage: React.FC = () => {
       {/* Strict 3-Zone Top Bar Contract */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-xs border-b border-slate-200 px-6 py-4">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between">
-          {/* Zone 1: Single text element wordmark */}
-          <a
-            href="#top"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('landing');
-            }}
-            className="text-xl font-bold tracking-tight text-blue-600"
-          >
-            BlueSpace
-          </a>
+          <XamvierLogo size="md" onClick={() => navigate('home')} />
 
           {/* Zone 2: 4 clean text navigation links */}
           <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
@@ -135,7 +125,7 @@ export const LandingPage: React.FC = () => {
               {!heroImgFailed ? (
                 <img
                   src={GENERATED_ASSETS.heroBanner}
-                  alt="Không gian cộng đồng trực tuyến BlueSpace"
+                  alt="Không gian cộng đồng trực tuyến Xamvier"
                   referrerPolicy="no-referrer"
                   onError={() => setHeroImgFailed(true)}
                   className="w-full h-full object-cover"
@@ -377,8 +367,8 @@ export const LandingPage: React.FC = () => {
       <footer className="mt-auto bg-white border-t border-slate-200 px-6 py-8">
         <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-3">
-            <span className="font-bold text-slate-900 text-sm">BlueSpace</span>
-            <span aria-hidden="true">·</span>
+            <XamvierLogo size="sm" onClick={() => navigate('home')} />
+            <span aria-hidden="true" className="text-slate-300">·</span>
             <span>Connect. Discuss. Share.</span>
           </div>
           <div className="flex items-center gap-6">
@@ -455,18 +445,14 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center mb-6">
-          <button
-            type="button"
-            onClick={() => navigate('landing')}
-            className="text-2xl font-bold tracking-tight text-blue-600"
-          >
-            BlueSpace
-          </button>
-          <h1 className="mt-3 text-2xl font-bold text-slate-900">
-            Đăng nhập vào cộng đồng
+          <div className="flex justify-center mb-3">
+            <XamvierLogo size="lg" onClick={() => navigate('home')} />
+          </div>
+          <h1 className="mt-2 text-2xl font-bold text-slate-900">
+            Đăng nhập vào Xamvier
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Chào mừng trở lại! Hãy đăng nhập để tiếp tục thảo luận và kết nối.
+            Chào mừng trở lại! Đăng nhập để tiếp tục thảo luận, chia sẻ và kết nối.
           </p>
         </div>
 
@@ -584,7 +570,6 @@ export const LoginPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Admin Account Hint (Discreet) */}
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
             <span>
               Chưa có tài khoản?{' '}
@@ -603,12 +588,6 @@ export const LoginPage: React.FC = () => {
             >
               Về diễn đàn →
             </button>
-          </div>
-
-          <div className="mt-4 p-3 bg-slate-50 border border-slate-200/60 rounded-xl text-center">
-            <p className="text-[11px] text-slate-500">
-              🛡️ Tài khoản quản trị viên: <span className="font-semibold text-slate-700 font-mono">admin</span> &nbsp;|&nbsp; Mật khẩu: <span className="font-semibold text-slate-700 font-mono">Admin@123</span>
-            </p>
           </div>
         </div>
       </div>
@@ -658,14 +637,10 @@ export const RegisterPage: React.FC = () => {
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center mb-6">
-          <button
-            type="button"
-            onClick={() => navigate('landing')}
-            className="text-2xl font-bold tracking-tight text-blue-600"
-          >
-            BlueSpace
-          </button>
-          <h1 className="mt-3 text-2xl font-bold text-slate-900">Tạo tài khoản mới</h1>
+          <div className="flex justify-center mb-3">
+            <XamvierLogo size="lg" onClick={() => navigate('home')} />
+          </div>
+          <h1 className="mt-2 text-2xl font-bold text-slate-900">Tạo tài khoản mới</h1>
           <p className="mt-1 text-sm text-slate-500">
             Tham gia cộng đồng thảo luận và kết nối bạn bè ngay hôm nay.
           </p>
@@ -791,7 +766,7 @@ export const RegisterPage: React.FC = () => {
               />
               <span>
                 Tôi đồng ý với Điều khoản sử dụng và Quy tắc ứng xử văn minh của cộng đồng
-                BlueSpace.
+                Xamvier.
               </span>
             </label>
 
@@ -853,10 +828,10 @@ export const ForgotPasswordPage: React.FC = () => {
         <div className="text-center mb-6">
           <button
             type="button"
-            onClick={() => navigate('landing')}
+            onClick={() => navigate('home')}
             className="text-2xl font-bold tracking-tight text-blue-600"
           >
-            BlueSpace
+            Xamvier
           </button>
           <h1 className="mt-3 text-2xl font-bold text-slate-900">Khôi phục mật khẩu</h1>
           <p className="mt-1 text-sm text-slate-500">

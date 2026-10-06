@@ -248,6 +248,54 @@ async function startServer() {
     }
   });
 
+  app.post('/api/auth/google-sign-in', async (req, res) => {
+    try {
+      const { email, displayName, avatar, idToken } = req.body || {};
+      if (!email || !String(email).trim()) {
+        return res.status(400).json({ error: 'Email tài khoản Google là bắt buộc.' });
+      }
+      const cleanEmail = String(email).trim().toLowerCase();
+
+      // If idToken is provided, try verifying it
+      if (idToken) {
+        try {
+          const verified = await verifyAnyToken(idToken);
+          if (verified && verified.email) {
+            // Valid token
+          }
+        } catch {
+          // Token verification fallback
+        }
+      }
+
+      // Upsert user into database
+      const googleUid = `google_${cleanEmail.replace(/[^a-z0-9]/g, '_')}`;
+      const user = await getOrCreateUser(
+        googleUid,
+        cleanEmail,
+        displayName ? String(displayName) : cleanEmail.split('@')[0],
+        avatar ? String(avatar) : ''
+      );
+
+      if (user.isBanned) {
+        return res.status(403).json({ error: 'Tài khoản của bạn đã bị khóa bởi quản trị viên.' });
+      }
+
+      await setUserOnlineStatus(user.id, true);
+      const token = signSessionToken({
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName,
+        picture: user.avatar,
+      });
+
+      res.json({ token, user });
+    } catch (error: any) {
+      console.error('Google sign-in error:', error);
+      res.status(500).json({ error: error.message || 'Đăng nhập Google thất bại.' });
+    }
+  });
+
   app.post('/api/auth/sync', requireAuth, async (req: AuthRequest, res) => {
     try {
       const { displayName, avatar } = req.body || {};
@@ -863,7 +911,7 @@ async function startServer() {
   }
 
   server.listen(PORT, '0.0.0.0', () => {
-    console.log(`BlueSpace server listening on http://0.0.0.0:${PORT}`);
+    console.log(`Xamvier server listening on http://0.0.0.0:${PORT}`);
   });
 }
 

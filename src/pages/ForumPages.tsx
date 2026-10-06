@@ -146,7 +146,7 @@ export const HomePage: React.FC = () => {
       ) : topics.length === 0 ? (
         <EmptyState
           title="Chưa có chủ đề nào"
-          description="Hãy là người đầu tiên khởi tạo cuộc thảo luận trong cộng đồng BlueSpace."
+          description="Hãy là người đầu tiên khởi tạo cuộc thảo luận trong cộng đồng Xamvier."
           actionLabel="Tạo chủ đề mới"
           onAction={() => navigate(user ? 'create-topic' : 'login')}
         />
