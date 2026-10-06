@@ -73,7 +73,7 @@ const AppContext = createContext<AppContextValue | null>(null);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
-  const [route, setRoute] = useState<RouteState>({ screen: 'landing' });
+  const [route, setRoute] = useState<RouteState>({ screen: 'home' });
   const [categories, setCategories] = useState<Category[]>([]);
   const [socialData, setSocialData] = useState<SocialData>({
     friends: [],

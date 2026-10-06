@@ -290,47 +290,65 @@ export const LandingPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredTopics.map((topic) => (
-              <div
-                key={topic.id}
-                onClick={() => navigate('topic-detail', { topicId: topic.id })}
-                className="border border-slate-200/80 rounded-xl p-6 hover:border-blue-400 transition-colors cursor-pointer flex flex-col justify-between bg-[#F8FAFC]/50"
+          {featuredTopics.length === 0 ? (
+            <div className="py-12 px-6 text-center bg-slate-50/70 border border-dashed border-slate-200 rounded-xl">
+              <p className="text-sm font-semibold text-slate-800">
+                Chưa có chủ đề nào được đăng tải
+              </p>
+              <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                Cộng đồng đang ở trạng thái mới toanh! Hãy là người tiên phong khởi tạo cuộc thảo luận đầu tiên.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('home')}
+                className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
               >
-                <div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 mb-3">
-                    <span className="font-medium text-blue-600">
-                      {topic.category?.name || 'General'}
-                    </span>
-                    <span aria-hidden="true">·</span>
-                    <span>{formatRelativeTime(topic.createdAt)}</span>
+                Vào diễn đàn ngay →
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {featuredTopics.map((topic) => (
+                <div
+                  key={topic.id}
+                  onClick={() => navigate('topic-detail', { topicId: topic.id })}
+                  className="border border-slate-200/80 rounded-xl p-6 hover:border-blue-400 transition-colors cursor-pointer flex flex-col justify-between bg-[#F8FAFC]/50"
+                >
+                  <div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 mb-3">
+                      <span className="font-medium text-blue-600">
+                        {topic.category?.name || 'General'}
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span>{formatRelativeTime(topic.createdAt)}</span>
+                    </div>
+                    <h3 className="text-base font-semibold text-slate-900 mb-2 line-clamp-2">
+                      {topic.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4">
+                      {topic.content}
+                    </p>
                   </div>
-                  <h3 className="text-base font-semibold text-slate-900 mb-2 line-clamp-2">
-                    {topic.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4">
-                    {topic.content}
-                  </p>
-                </div>
 
-                <div className="pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <UserAvatar
-                      name={topic.author.displayName}
-                      avatar={topic.author.avatar}
-                      size="xs"
-                    />
-                    <span className="font-medium text-slate-700 truncate">
-                      {topic.author.displayName}
+                  <div className="pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <UserAvatar
+                        name={topic.author.displayName}
+                        avatar={topic.author.avatar}
+                        size="xs"
+                      />
+                      <span className="font-medium text-slate-700 truncate">
+                        {topic.author.displayName}
+                      </span>
+                    </div>
+                    <span className="tabular-nums shrink-0">
+                      {topic.likeCount} thích · {topic.commentCount} phản hồi
                     </span>
                   </div>
-                  <span className="tabular-nums shrink-0">
-                    {topic.likeCount} thích · {topic.commentCount} phản hồi
-                  </span>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -560,22 +578,38 @@ export const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors whitespace-nowrap"
+              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors whitespace-nowrap cursor-pointer shadow-xs"
             >
               {loading ? 'Đang xử lý...' : 'Đăng nhập'}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-slate-500">
-            Chưa có tài khoản?{' '}
+          {/* Admin Account Hint (Discreet) */}
+          <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span>
+              Chưa có tài khoản?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('register')}
+                className="font-semibold text-blue-600 hover:underline cursor-pointer"
+              >
+                Đăng ký ngay
+              </button>
+            </span>
             <button
               type="button"
-              onClick={() => navigate('register')}
-              className="font-semibold text-blue-600 hover:underline"
+              onClick={() => navigate('home')}
+              className="text-slate-500 hover:text-blue-600 cursor-pointer"
             >
-              Đăng ký ngay
+              Về diễn đàn →
             </button>
-          </p>
+          </div>
+
+          <div className="mt-4 p-3 bg-slate-50 border border-slate-200/60 rounded-xl text-center">
+            <p className="text-[11px] text-slate-500">
+              🛡️ Tài khoản quản trị viên: <span className="font-semibold text-slate-700 font-mono">admin</span> &nbsp;|&nbsp; Mật khẩu: <span className="font-semibold text-slate-700 font-mono">Admin@123</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -5,38 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       (function () {
+        // Suppress any external or iframe inspector error about assigning fetch to Window
+        window.addEventListener(
+          'error',
+          function (e) {
+            if (
+              e &&
+              e.message &&
+              e.message.indexOf('fetch') !== -1 &&
+              (e.message.indexOf('getter') !== -1 || e.message.indexOf('read only') !== -1)
+            ) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              return true;
+            }
+          },
+          true
+        );
+
+        // Ensure window.fetch is safely writable
         try {
-          var currentFetch =
-            typeof window !== 'undefined' && typeof window.fetch === 'function'
-              ? window.fetch.bind(window)
-              : undefined;
-          if (currentFetch) {
+          var originalFetch = window.fetch;
+          if (originalFetch) {
             try {
               Object.defineProperty(window, 'fetch', {
-                get: function () {
-                  return currentFetch;
-                },
-                set: function (fn) {
-                  if (typeof fn === 'function') currentFetch = fn;
-                },
+                value: originalFetch,
+                writable: true,
                 configurable: true,
                 enumerable: true,
               });
-            } catch (e1) {}
-            try {
-              if (typeof Window !== 'undefined' && Window.prototype) {
-                Object.defineProperty(Window.prototype, 'fetch', {
+            } catch (err1) {
+              try {
+                var currentFetch = originalFetch;
+                Object.defineProperty(window, 'fetch', {
                   get: function () {
                     return currentFetch;
                   },
                   set: function (fn) {
-                    if (typeof fn === 'function') currentFetch = fn;
+                    currentFetch = fn;
                   },
                   configurable: true,
                   enumerable: true,
                 });
-              }
-            } catch (e2) {}
+              } catch (err2) {}
+            }
           }
         } catch (err) {}
       })();

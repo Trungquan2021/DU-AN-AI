@@ -34,6 +34,7 @@ export const MainLayout: React.FC<{
     unreadNotificationsCount,
     unreadMessagesCount,
     logout,
+    loginWithEmail,
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -283,7 +284,7 @@ export const MainLayout: React.FC<{
                     setMobileMenuOpen(false);
                     navigate('login');
                   }}
-                  className="w-full py-2 bg-blue-600 text-white text-sm font-medium rounded-lg"
+                  className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl cursor-pointer shadow-xs transition-colors"
                 >
                   Đăng nhập
                 </button>
@@ -293,7 +294,7 @@ export const MainLayout: React.FC<{
                     setMobileMenuOpen(false);
                     navigate('register');
                   }}
-                  className="w-full py-2 bg-slate-100 text-slate-800 text-sm font-medium rounded-lg"
+                  className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-medium rounded-xl cursor-pointer transition-colors"
                 >
                   Đăng ký tài khoản
                 </button>
@@ -443,14 +444,14 @@ export const MainLayout: React.FC<{
                 <button
                   type="button"
                   onClick={() => navigate('login')}
-                  className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors whitespace-nowrap"
+                  className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-colors whitespace-nowrap cursor-pointer shadow-xs"
                 >
                   Đăng nhập
                 </button>
                 <button
                   type="button"
                   onClick={() => navigate('register')}
-                  className="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-colors whitespace-nowrap"
+                  className="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-xl transition-colors whitespace-nowrap cursor-pointer"
                 >
                   Đăng ký tài khoản
                 </button>
@@ -485,22 +486,28 @@ export const MainLayout: React.FC<{
                   Xem tất cả
                 </button>
               </div>
-              <div className="divide-y divide-slate-100">
-                {featuredTopics.map((t, index) => (
-                  <div
-                    key={t.id}
-                    onClick={() => navigate('topic-detail', { topicId: t.id })}
-                    className="py-3 first:pt-0 last:pb-0 cursor-pointer group"
-                  >
-                    <p className="text-xs text-slate-400 mb-1 tabular-nums">
-                      0{index + 1}. {t.category?.name || 'Cộng đồng'} · {t.views} lượt xem
-                    </p>
-                    <h4 className="text-sm font-medium text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
-                      {t.title}
-                    </h4>
-                  </div>
-                ))}
-              </div>
+              {featuredTopics.length === 0 ? (
+                <p className="text-xs text-slate-400 py-1">
+                  Chưa có chủ đề nổi bật. Hãy tạo bài viết đầu tiên!
+                </p>
+              ) : (
+                <div className="divide-y divide-slate-100">
+                  {featuredTopics.map((t, index) => (
+                    <div
+                      key={t.id}
+                      onClick={() => navigate('topic-detail', { topicId: t.id })}
+                      className="py-3 first:pt-0 last:pb-0 cursor-pointer group"
+                    >
+                      <p className="text-xs text-slate-400 mb-1 tabular-nums">
+                        0{index + 1}. {t.category?.name || 'Cộng đồng'} · {t.views} lượt xem
+                      </p>
+                      <h4 className="text-sm font-medium text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                        {t.title}
+                      </h4>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Online Users */}
